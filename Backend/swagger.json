@@ -1,0 +1,447 @@
+{
+  "swagger": "2.0",
+  "info": {
+      "description": "API Assignment with basic CRUD (Create , Read , Update , Delete)",
+      "version": "1.0.0",
+      "title": "API Assignment",
+      "contact": {
+          "email": "akshit@gmail.com"
+      }
+  },
+  "host": "localhost:8000",
+  "basePath": "/",
+  "tags": [
+      {
+          "name": "user",
+          "description": "Operations on users"
+      }
+  ],
+  "schemes": [
+      "http"
+  ],
+  "paths": {
+      "/api/users/": {
+          "get": {
+              "tags": [
+                  "user"
+              ],
+              "summary": "Get all users",
+              "description": "This should be used to get all users data.",
+              "operationId": "getUsers",
+              "produces": [
+                  "application/json"
+              ],
+              "parameters": [],
+              "responses": {
+                  "200": {
+                      "description": "All users data.",
+                      "schema": {
+                          "$ref": "#/definitions/Users"
+                      }
+                  },
+                  "404": {
+                      "description": "User not found",
+                      "schema": {
+                          "$ref": "#/definitions/ApiResponse"
+                      }
+                  }
+              }
+          },
+          "post": {
+              "tags": [
+                  "user"
+              ],
+              "summary": "Create user",
+              "description": "This can only be done by the logged in user.",
+              "operationId": "createUser",
+              "consumes": [
+                  "application/json"
+              ],
+              "produces": [
+                  "application/json",
+                  "application/xml"
+              ],
+              "parameters": [
+                  {
+                      "in": "body",
+                      "name": "body",
+                      "description": "Created user object",
+                      "required": true,
+                      "schema": {
+                          "$ref": "#/definitions/CreateUserSchema"
+                      }
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successfully added user data.",
+                      "schema": {
+                          "$ref": "#/definitions/User"
+                      }
+                  },
+                  "400": {
+                      "description": "Bad Request.",
+                      "schema": {
+                          "$ref": "#/definitions/ApiResponse"
+                      }
+                  }
+              }
+          }
+      },
+      "/api/users/{email}": {
+          "get": {
+              "tags": [
+                  "user"
+              ],
+              "summary": "Get user by user email",
+              "description": "This should be used to get user data.",
+              "parameters": [
+                  {
+                      "name": "email",
+                      "in": "path",
+                      "description": "The email that needs to be fetched.",
+                      "required": true,
+                      "type": "string"
+                  }
+              ],
+              "produces": [
+                  "application/json"
+              ],
+              "responses": {
+                  "200": {
+                      "description": "User data",
+                      "schema": {
+                          "$ref": "#/definitions/User"
+                      }
+                  },
+                  "400": {
+                      "description": "Bad Request.",
+                      "schema": {
+                          "$ref": "#/definitions/ApiResponse"
+                      }
+                  },
+                  "404": {
+                      "description": "User not found",
+                      "schema": {
+                          "$ref": "#/definitions/ApiResponse"
+                      }
+                  }
+              }
+          },
+          "patch": {
+              "tags": [
+                  "user"
+              ],
+              "summary": "Update user",
+              "description": "This should be used to update user.",
+              "produces": [
+                  "application/json"
+              ],
+              "parameters": [
+                  {
+                      "name": "email",
+                      "in": "path",
+                      "description": "User email to be updated",
+                      "required": true,
+                      "type": "string"
+                  },
+                  {
+                      "in": "body",
+                      "name": "body",
+                      "description": "New updated user object",
+                      "required": true,
+                      "schema": {
+                          "$ref": "#/definitions/CreateUserSchema"
+                      }
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Data before update",
+                      "schema": {
+                          "$ref": "#/definitions/User"
+                      }
+                  },
+                  "400": {
+                      "description": "Invalid user supplied",
+                      "schema": {
+                          "$ref": "#/definitions/ApiResponse"
+                      }
+                  },
+                  "404": {
+                      "description": "User not found",
+                      "schema": {
+                          "$ref": "#/definitions/ApiResponse"
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "user"
+              ],
+              "summary": "Delete user",
+              "description": "This should be used to delete user.",
+              "produces": [
+                  "application/json"
+              ],
+              "parameters": [
+                  {
+                      "name": "email",
+                      "in": "path",
+                      "description": "The user email that needs to be deleted",
+                      "required": true,
+                      "type": "string"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Data before delete",
+                      "schema": {
+                          "$ref": "#/definitions/User"
+                      }
+                  },
+                  "400": {
+                      "description": "Invalid user supplied",
+                      "schema": {
+                          "$ref": "#/definitions/ApiResponse"
+                      }
+                  },
+                  "404": {
+                      "description": "User not found",
+                      "schema": {
+                          "$ref": "#/definitions/ApiResponse"
+                      }
+                  }
+              }
+          }
+      }
+  },
+  "securityDefinitions": {
+      "api_key": {
+          "type": "apiKey",
+          "name": "api_key",
+          "in": "header"
+      },
+      "petstore_auth": {
+          "type": "oauth2",
+          "authorizationUrl": "https://petstore.swagger.io/oauth/authorize",
+          "flow": "implicit",
+          "scopes": {
+              "read:pets": "read your pets",
+              "write:pets": "modify pets in your account"
+          }
+      }
+  },
+  "definitions": {
+      "ApiResponse": {
+          "type": "object",
+          "properties": {
+              "code": {
+                  "type": "integer",
+                  "format": "int32"
+              },
+              "message": {
+                  "type": "string"
+              },
+              "error": {
+                  "type": "string"
+              },
+              "data": {
+                  "type": "object"
+              }
+          }
+      },
+      "User": {
+          "type": "object",
+          "properties": {
+              "code": {
+                  "type": "integer",
+                  "format": "int32"
+              },
+              "message": {
+                  "type": "string"
+              },
+              "error": {
+                  "type": "string"
+              },
+              "data": {
+                  "$ref": "#/definitions/UserSchema"
+              }
+          },
+          "xml": {
+              "name": "User"
+          }
+      },
+      "Users": {
+          "type": "object",
+          "properties": {
+              "code": {
+                  "type": "integer",
+                  "format": "int32"
+              },
+              "message": {
+                  "type": "string"
+              },
+              "error": {
+                  "type": "string"
+              },
+              "data": {
+                  "type": "array",
+                  "items": {
+                      "$ref": "#/definitions/UserSchema"
+                  }
+              }
+          },
+          "xml": {
+              "name": "Users"
+          }
+      },
+      "CreateUserSchema": {
+          "type": "object",
+          "required": [
+              "name",
+              "age",
+              "email",
+              "gender",
+              "mobileNumber",
+              "birthday",
+              "city",
+              "state",
+              "country",
+              "address1"
+          ],
+          "properties": {
+              "name": {
+                  "type": "string",
+                  "example": "user0"
+              },
+              "age": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 23
+              },
+              "email": {
+                  "type": "string",
+                  "example": "user0@gmail.com"
+              },
+              "gender": {
+                  "type": "string",
+                  "example": "male",
+                  "enum": [
+                      "male",
+                      "female",
+                      "other"
+                  ]
+              },
+              "mobileNumber": {
+                  "type": "string",
+                  "example": "7011356044"
+              },
+              "birthday": {
+                  "type": "string",
+                  "example": "05-15-2000"
+              },
+              "city": {
+                  "type": "string",
+                  "example": "Shighanshina"
+              },
+              "state": {
+                  "type": "string",
+                  "example": "Wall Maria"
+              },
+              "country": {
+                  "type": "string",
+                  "example": "Paradis Island"
+              },
+              "address1": {
+                  "type": "string",
+                  "example": "123 Shighanshina Wall Maria Paradis Island"
+              },
+              "address2": {
+                  "type": "string",
+                  "example": "Liberio Marley"
+              }
+          },
+          "xml": {
+              "name": "CreateUserSchema"
+          }
+      },
+      "UserSchema": {
+          "type": "object",
+          "required": [
+              "id",
+              "name",
+              "age",
+              "email",
+              "gender",
+              "mobileNumber",
+              "birthday",
+              "city",
+              "state",
+              "country",
+              "address1"
+          ],
+          "properties": {
+              "id": {
+                  "type": "ObjectID",
+                  "example": "63fde94f5b10fb5cd1732dc8",
+                  "uniqueItems": true
+              },
+              "name": {
+                  "type": "string",
+                  "example": "user0"
+              },
+              "age": {
+                  "type": "integer",
+                  "format": "int32",
+                  "example": 23
+              },
+              "email": {
+                  "type": "string",
+                  "example": "user0@gmail.com"
+              },
+              "gender": {
+                  "type": "string",
+                  "example": "male",
+                  "enum": [
+                      "male",
+                      "female",
+                      "other"
+                  ]
+              },
+              "mobileNumber": {
+                  "type": "string",
+                  "example": "7011356044"
+              },
+              "birthday": {
+                  "type": "string",
+                  "example": "02-15-2000"
+              },
+              "city": {
+                  "type": "string",
+                  "example": "Delhi"
+              },
+              "state": {
+                  "type": "string",
+                  "example": "Shighanshina"
+              },
+              "country": {
+                  "type": "string",
+                  "example": "Wall Maria"
+              },
+              "address1": {
+                  "type": "string",
+                  "example": "123 Shighanshina Wall Maria Paradis Island"
+              },
+              "address2": {
+                  "type": "string",
+                  "example": "Liberio Marley"
+              }
+          },
+          "xml": {
+              "name": "UserSchema"
+          }
+      }
+  }
+}

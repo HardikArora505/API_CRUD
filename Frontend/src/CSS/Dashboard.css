@@ -1,0 +1,48 @@
+.dashboard{
+    display: flex;
+    margin-top:50px;
+    align-items: center;
+    justify-content: center;
+    /* border:2px solid red; */
+    font-size: larger;
+}
+.dashboard a{
+    color:white;
+    transition: all 0.2s ease-in-out;
+
+}
+.dashboard a:hover{
+    letter-spacing: 5px;
+}
+.dashboard div{
+    width: 39vh;
+    height: 15vh;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 12px;
+    transition: all 0.2s ease-in-out;
+}
+.dashboard div:hover{
+    box-shadow: black 10px 14px 9px;
+    margin-right: 17px;
+}
+#getuser{
+
+    background-color: #419ef9;
+}
+#getuserid{
+    background-color: #0033bf;
+
+}
+#createuser{
+    background-color: #00bf9a;
+}
+#deleteuser{
+    background-color: #fd5d93;
+}
+#updateuser{
+    background-color: #e14eca;
+
+}
